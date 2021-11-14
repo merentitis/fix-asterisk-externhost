@@ -9,6 +9,7 @@ myoldip=`cat $TMP_FILE`
 if ! [[ $myip == $myoldip ]]; then
         logger external IP address has changed, fixing asterisk: sip_general_custom.conf
         echo $myip > $TMP_FILE
-        echo externhost=$myip > /etc/asterisk/sip_general_custom.conf
+        sed -i '/externhost/d' /etc/asterisk/sip_general_custom.conf
+        echo externhost=$myip >> /etc/asterisk/sip_general_custom.conf
         /usr/sbin/asterisk -rx "sip reload"
 fi
